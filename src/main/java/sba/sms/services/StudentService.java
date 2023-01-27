@@ -95,9 +95,14 @@ public class StudentService implements StudentI  {
 			Student s=session.get(Student.class,email);
 			Course c=session.get(Course.class, courseId);
 			tx=session.beginTransaction();
+						
+			//To eliminate duplicate records
+			List<Course> courses =s.getCourses();
+			if(!courses.contains(c)) {
 			s.addCourse(c);
 			session.merge(s);
 			tx.commit();
+			}
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 			tx.rollback();
@@ -114,7 +119,7 @@ public class StudentService implements StudentI  {
 		try {	
 			
 			Student s =session.createQuery("from Student where email=:email",Student.class).setParameter("email", email).getSingleResult();
-			courses = s.getCourses();	
+			courses =  s.getCourses();	
 			
 		} catch (HibernateException ex) {
 			ex.printStackTrace();

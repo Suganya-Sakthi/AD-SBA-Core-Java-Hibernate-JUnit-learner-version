@@ -1,8 +1,10 @@
 package sba.sms.models;
 
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.CascadeType;
@@ -45,7 +47,10 @@ String password;
 @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
 		CascadeType.REFRESH })
 @JoinTable(name = "student_courses", joinColumns = @JoinColumn(name = "student_email"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+
+
 List<Course> courses = new LinkedList<Course>();
+
 public void addCourse(Course c) {
 	courses.add(c);
 	c.getStudents().add(this);
